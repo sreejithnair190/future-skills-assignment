@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const { default: mongoose } = require("mongoose");
+const cors = require("cors")
 
 const { initializeRoutes } = require("./routes");
 const globalErrorHandler = require("./middlewares/errorMiddleWare");
@@ -10,7 +11,7 @@ const { PORT, MONGODB_URI } = require("./utils/constants");
 const app = express();
 
 app.use(express.json());
-
+app.use(cors());
 app.use(morgan("dev"));
 
 initializeRoutes(app);
