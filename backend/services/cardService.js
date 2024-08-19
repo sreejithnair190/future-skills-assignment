@@ -2,17 +2,21 @@ const cardModel = require("../models/cardModel");
 const AppError = require("../utils/appError");
 
 exports.create = async (title, description) => {
-  const newCard = await cardModel
-    .create({
-      title,
-      description,
-    });
+  const newCard = await cardModel.create({
+    title,
+    description,
+  });
 
   return newCard;
 };
 
 exports.getAll = async (search = "") => {
-  const cards = await cardModel.find().select("-__v");
+  const cards = await cardModel
+    .find({
+      title: { $regex: search, $options: "i" },
+    })
+    .select("-__v")
+    .sort({ createdAt: 1 });
   return cards;
 };
 

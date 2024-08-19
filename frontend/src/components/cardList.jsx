@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import Card from "./card";
 
 const CardList = () => {
   const API_URL = "http://localhost:8000/api/v1";
+  const { search } = useSelector(state => state.card );
   const [cards, setCards] = useState([]);
 
   const fetchCards = async () => {
     try {
-      const response = await fetch(`${API_URL}/cards`);
+      const response = await fetch(`${API_URL}/cards?search=${search}`);
       if (!response.ok) {
         const result = await response.json();
         const errorMessage = result.message || "Something went wrong!";
@@ -25,7 +27,7 @@ const CardList = () => {
 
   useEffect(() => {
     fetchCards();
-  }, []);
+  }, [search]);
 
   return (
     <div className="flex w-full justify-center items-center">
